@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  gamingwebapp:
+    image: gamingwebapp
+    build:
+      context: .
+      dockerfile: src/Applications/GamingWebApp/Dockerfile
+    depends_on:
+      - "leaderboard.webapi"
+    networks:
+      - frontend
+    ports:
+      - "5050:80"
+      - "5051:443"
+
+  leaderboard.webapi:
+    image: leaderboardwebapi
+    build:
+      context: .
+      dockerfile: src/Services/Leaderboard.WebAPI/Dockerfile
+    depends_on:
+      - "sql.data"
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "6050:80"
+      - "6051:443"
+
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+    - SA_PASSWORD=Pass@word
+    - MSSQL_PID=Developer
+    - ACCEPT_EULA=Y
+    networks:
+      - backend
+    ports:
+      - "5433:1433"
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
