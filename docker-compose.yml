@@ -12,7 +12,6 @@ services:
       - frontend
     ports:
       - "5050:80"
-      - "5051:443"
 
   leaderboard.webapi:
     image: leaderboardwebapi
@@ -26,7 +25,6 @@ services:
       - backend
     ports:
       - "6050:80"
-      - "6051:443"
 
   sql.data:
     image: mcr.microsoft.com/mssql/server:2017-latest
